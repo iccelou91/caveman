@@ -1,0 +1,62 @@
+
+<!DOCTYPE HTML>
+<html dir="ltr" lang="en-US">
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>Cave Manager</title>
+
+    <!--- CSS --->
+    <link rel="stylesheet" href="{{STATIC_URL}}style.css" type="text/css" />
+
+
+    <!--- Javascript libraries (jQuery and Selectivizr) used for the custom checkbox --->
+
+    <!--[if (gte IE 6)&(lte IE 8)]>
+        <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="selectivizr.js"></script>
+        <noscript><link rel="stylesheet" href="fallback.css" /></noscript>
+    <![endif]-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(function (){  
+        $("#check-out").click(function(){
+            $("#id_isCheckIn").val(false);
+            $("#checkin-form").submit();
+        });
+        $("#check-in").click(function(){
+            $("#id_isCheckIn").val(true);
+            $("#checkin-form").submit();
+        });
+    });  
+    </script>
+    </head>
+
+    <body>
+        <div id="container">
+        <form action="/" method="post" id="checkin-form">
+            {% csrf_token %}
+            <div class="login">Check-in / Check-out</div>
+            {{form.non_field_errors}}
+            {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+            {% endfor %}
+
+            {# Include the visible fields #}
+            {% for field in form.visible_fields %}
+                <div class="username-field">
+                    {{ field.errors }}
+                    {{ field }}
+                </div>
+            {% endfor %}
+            <div class="buttons">
+                <a class="button" id="check-in" href="#">Check In</a>  
+                <a class="button" id="check-out" style="margin-top: 5px;" href="#">Check Out</a>
+                <a class="button" id="register" style="margin-top: 5px;" href="register">Register</a>   
+            </div>
+        </form>
+        </div>
+        <div id="footer">
+        </div>
+    </body>
+</html>
