@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
 
 # Create your models here.
 class ClimberProfile(models.Model):
@@ -20,6 +21,9 @@ class CaveOpening(models.Model):
     open_time = models.DateTimeField(auto_now_add=True)
     close_time = models.DateTimeField(blank=True, null=True)
     climbers = models.ManyToManyField(ClimberProfile)
+    def close(self):
+        self.close_time = datetime.now()
+        self.save()
     def __unicode__(self):
         return '%s to %s(%s)' % (self.open_time, self.close_time, self.owner.username)
 

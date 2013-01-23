@@ -1,14 +1,13 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from models import CheckIn, CheckOut
+from models import *
 
-class CheckInOutForm(forms.Form):
+class GetClimberForm(forms.Form):
     username = forms.CharField()
-    isCheckIn = forms.BooleanField(initial=True, required=False)
 
     def clean(self):
-        cleaned_data = super(CheckInOutForm, self).clean()
+        cleaned_data = super(GetClimberForm, self).clean()
         #user, created = User.objects.get_or_create(username=cleaned_data['username'])
         #if created:
             #print "this is a new user"
@@ -17,18 +16,16 @@ class CheckInOutForm(forms.Form):
             user = User.objects.get(username=cleaned_data['username'])
         except ObjectDoesNotExist:
             raise forms.ValidationError("%s does not exist" % cleaned_data['username'])
-        user.save()
         cleaned_data["user"] = user
 
-
-        print cleaned_data["isCheckIn"]
-        if cleaned_data["isCheckIn"]:
-            lastCheckIn = CheckIn.objects.filter(climber=user, checkOut=None)
-            if lastCheckIn:
-                raise forms.ValidationError("%s is already checked in" % user.username)
-        else:
-            lastCheckIn = CheckIn.objects.filter(climber=user, checkOut=None)
-            if not lastCheckIn:
-                raise forms.ValidationError("%s is already checked out" % user.username)
-
+        return cleaned_data
+        
+class WaiverForm(forms.Form):
+    accepted = forms.BooleanField(False)
+    signature = forms.CharField()
+    
+    def clean(self):
+        cleaned_data = super(WaiverForm, self).clean()
+        if not accepted:
+            raise forms.ValidationError("You must accept the terms before climbing")
         return cleaned_data
