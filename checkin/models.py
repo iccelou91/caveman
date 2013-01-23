@@ -3,24 +3,32 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class ClimberProfile(models.Model):
-    user = models.ForeignKey(User);
+    user = models.ForeignKey(User, blank=True, null=True);
     #real student ID numbers are always 9 digits, but we'll allow one extra
-    idnum = models.CharField(max_length=10)
-    #only store whether the climber is paid through current term
-    feePaid = models.BooleanField(False)
-    #only store wheter the climber has signed waiver for current year
-    waiverSigned = models.BooleanField(False)
+    id_num = models.CharField(max_length=10, primary_key=True)
+    fee_last_paid = models.DateTimeField(blank=True, null=True)
+    waiver_last_signed = models.DateTimeField(blank=True, null=True)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    def get_full_name(self):
+        return '%s %s' % (self.first_name, self.last_name)
     def __unicode__(self):
-        return self.user.username
-class CheckOut(models.Model):
-    climber = models.ForeignKey(User)
-    time = models.DateTimeField(auto_now_add=True)
+        return self.get_full_name()
+        
+class CaveOpening(models.Model):
+    opener = models.ForeignKey(User)
+    open_time = models.DateTimeField(auto_now_add=True)
+    close_time = models.DateTimeField(blank=True, null=True)
+    climbers = models.ManyToManyField(ClimberProfile)
     def __unicode__(self):
-        return self.climber.username
+        return '%s to %s(%s)' % (self.open_time, self.close_time, self.owner.username)
 
-class CheckIn(models.Model):
-    climber = models.ForeignKey(User)
-    time = models.DateTimeField(auto_now_add=True)
-    checkOut = models.ForeignKey(CheckOut, null=True, blank=True)
-    def __unicode__(self):
-        return self.climber.username
+class PaymentApprovalRequest(models.Model):
+    requester = models.ForeignKey(ClimberProfile)
+    date = models.DateTimeField(auto_now_add=True)
+    def approve(self):
+        self.requester.fee_last_paid = self.date
+        self.requester.save()
+        self.delete()
+    def reject(self):
+        self.delete()
