@@ -2,7 +2,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from forms import GetClimberForm, ClimberRegistrationForm
+from forms import GetClimberForm, ClimberRegistrationForm, WaiverForm
 from django import forms
 from django.contrib.auth.decorators import login_required
 from models import *
@@ -14,19 +14,27 @@ def open_cave(request):
         opening.close()
     new_opening = CaveOpening(opener=request.user)
     new_opening.save()
+    return redirect('/')
 
+def close_cave(request):
+    unclosed = CaveOpening.objects.filter(close_time__isnull=True)
+    for opening in unclosed:
+        if(opening.opener==request.user):
+            opening.close()
+    return redirect('/')
+    
 def get_climber(request):
     if request.method == 'POST':
         form = GetClimberForm(request.POST)
         if form.is_valid():
             user = form.cleaned_data['user']
-            climber = Climber.objects.get(user=user)
+            climber = ClimberProfile.objects.get(user=user)
             #TODO this url
             return redirect('/dashboard/'+climber.id_num)
     else:
         form = GetClimberForm()
 
-    return render(request, 'form.html', {'form': form, })
+    return render(request, 'temp_form.html', {'form': form, })
     
 def check_in_climber(request, student_id):
     climber = ClimberProfile.objects.get(id_num=student_id)
@@ -40,7 +48,7 @@ def check_in_climber(request, student_id):
             raise ValueError
     else:
         raise ValueError
-    redirect('/')
+    return redirect('/')
     
 def sign_waiver(request, student_id):
     climber = ClimberProfile.objects.get(id_num=student_id)
@@ -48,7 +56,7 @@ def sign_waiver(request, student_id):
     if request.method == 'POST':
         form = WaiverForm(request.POST)
         if form.is_valid():
-            climber = ClimberProfile.objects.get(user=request.user)
+            climber = ClimberProfile.objects.get(id_num=student_id)
             climber.waiver_last_signed = datetime.now()
             climber.save()
             return redirect('/')

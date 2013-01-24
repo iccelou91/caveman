@@ -26,6 +26,7 @@ class WaiverForm(forms.Form):
     
     def clean(self):
         cleaned_data = super(WaiverForm, self).clean()
+        accepted = cleaned_data.get('accepted')
         if not accepted:
             raise forms.ValidationError("You must accept the terms before climbing")
         return cleaned_data

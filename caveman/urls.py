@@ -19,4 +19,6 @@ urlpatterns = patterns('',
     (r'^waiver/(?P<student_id>\d+)/$', 'checkin.views.sign_waiver'),
     (r'^dashboard/(?P<student_id>\d+)/$', 'checkin.views.get_climber_dashboard'),
     (r'^pay/(?P<student_id>\d+)/$', 'checkin.views.pay_fee'),
+    (r'^opencave/$', 'checkin.views.open_cave'),
+    (r'^closecave/$', 'checkin.views.close_cave'),
 )

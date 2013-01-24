@@ -3,6 +3,7 @@
         <title>CaveMan Form</title>
     </head>
     <body>
+        <a href="{% url checkin.views.sign_up %}"> register </a>
         <form action="." method="post" class="generalText">{% csrf_token %}
 			{{ form.as_p }}
 			<input type="submit" value="Submit" />

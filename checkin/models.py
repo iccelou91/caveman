@@ -25,7 +25,7 @@ class CaveOpening(models.Model):
         self.close_time = datetime.now()
         self.save()
     def __unicode__(self):
-        return '%s to %s(%s)' % (self.open_time, self.close_time, self.owner.username)
+        return '%s to %s(%s)' % (self.open_time, self.close_time, self.opener.username)
 
 class PaymentApprovalRequest(models.Model):
     requester = models.ForeignKey(ClimberProfile)
