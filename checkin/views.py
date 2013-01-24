@@ -84,7 +84,7 @@ def sign_up(request):
             new_user.first_name = form.cleaned_data['first_name']
             new_user.last_name = form.cleaned_data['last_name']
             new_user.email = form.cleaned_data['email']
-            new_user.set_password(form.cleaned_data['student_id'])                                              #set the password for the new_user
+            new_user.set_unusable_password() #regular climbers can't log in
             new_user.save()
             new_climber = ClimberProfile(user=new_user, id_num=form.cleaned_data['student_id'])
             new_climber.first_name = form.cleaned_data['first_name']
