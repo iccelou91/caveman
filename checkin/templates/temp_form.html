@@ -1,0 +1,11 @@
+<html>
+    <head>
+        <title>CaveMan Form</title>
+    </head>
+    <body>
+        <form action="." method="post" class="generalText">{% csrf_token %}
+			{{ form.as_p }}
+			<input type="submit" value="Submit" />
+		</form>
+    </body>
+</html>

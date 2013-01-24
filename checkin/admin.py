@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .models import CheckIn, CheckOut
+from checkin.models import *
 
-admin.site.register(CheckIn)
-admin.site.register(CheckOut)
+admin.site.register(ClimberProfile)
+admin.site.register(CaveOpening)
+admin.site.register(PaymentApprovalRequest)

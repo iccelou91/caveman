@@ -1,0 +1,10 @@
+<html>
+    <head>
+        <title>CaveMan Form</title>
+    </head>
+    <body>
+        <a href="{% url checkin.views.check_in_climber student_id %}">Check In</a>
+        <a href="{% url checkin.views.sign_waiver student_id %}">Sign Waiver</a>
+        <a href="{% url checkin.views.pay_fee student_id %}">Pay Fee</a>
+    </body>
+</html>

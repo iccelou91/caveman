@@ -12,6 +12,11 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     (r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'registration/login.html'}),
-    (r'^$', 'checkin.views.checkIn'),
-    (r'^test/$', 'checkin.views.test')
+    (r'^$', 'checkin.views.get_climber'),
+    (r'^register/$', 'checkin.views.sign_up'),
+    (r'^dashboard/(?P<student_id>\d+)/$', 'checkin.views.get_climber_dashboard'),
+    (r'^checkin/(?P<student_id>\d+)/$', 'checkin.views.check_in_climber'),
+    (r'^waiver/(?P<student_id>\d+)/$', 'checkin.views.sign_waiver'),
+    (r'^dashboard/(?P<student_id>\d+)/$', 'checkin.views.get_climber_dashboard'),
+    (r'^pay/(?P<student_id>\d+)/$', 'checkin.views.pay_fee'),
 )

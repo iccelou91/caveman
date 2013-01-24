@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <title>CaveMan Form</title>
+    </head>
+    <body>
+    Bouldering Wall Liability Release, Waiver, Discharge, Covenant not to Sue
+This is a legally binding Release, waiver, Discharge and Covenant not to Sue (collectively, “Release”), made
+voluntarily by me, the undersigned Releasor, on my own behalf, and on the behalf of my heirs, executors,
+administrators, legal representatives and assigns (hereinafter collectively, “Releasor”, “I” or “me”, which terms
+shall also include Releasor’s parents or guardian, if Releasor is under 18 years of age) to Worcester Polytechnic
+Institute (“WPI”) and the WPI Outing Club.
+As the undersigned Releasor, I have read and understood the rules of the Bouldering Wall. I fully recognize that
+there are dangers and risks to which I may be exposed in utilization of the Bouldering Wall. I also acknowledge the
+risks in climbing without a helmet, and I personally accept any risks resulting in not wearing a helmet.
+As the undersigned Releasor, I understand that WPI does not require me to participate in utilization of the
+Bouldering Wall, but I want to do so despite the possible dangers and risks and despite this Release. With informed
+consent, and for valuable consideration received including assistance provided by WPI, as the undersigned
+Releasor, I agree to assume and take on myself all of the risks and responsibilities in any way arising from or
+associated with this activity, and I release WPI, its Outing Club and all of its affiliates, divisions, departments, and
+other units, committees and groups, and its and their respective governing boards, officers, directors, principals,
+trustees, legal representatives, member, owners, employees, agents, administrators, assigns, and contractors
+(collectively “Releasees”), from any and all claims, demands, suits, judgments, damages, actions and liabilities of
+every name and nature whatsoever, whenever occurring, whether known or unknown, contingent or fixed, at law
+or in equity, that I may suffer at any time arising from or in connection with the activity, including any injury or
+harm to me, my death, or damage to my property (collectively “Liabilities”), and I agree to defend, indemnify, and
+save Releasees harmless from and against any and all Liabilities.
+As the undersigned Releasor, I recognize that this Release means that I am giving up, among other things, all rights
+to sue Releasees for injuries, damages or losses I may incur. I also understand that this Release binds my heirs,
+executors, administrators, legal representatives and assigns, as well as myself. I also affirm that I have adequate
+medical or health insurance to cover any medical assistance I may require.
+I agree that this release shall be governed for all purposes by Massachusetts law, without regard to such law on
+choice of law.
+I have read this entire Release. I fully understand the entire Release and acknowledge that I have had the
+opportunity to review this Release with an attorney of my choosing if I so desire, and I agree to be legally bound by
+the Release.
+THIS IS A RELEASE OF YOUR RIGHTS, READ CAREFULLY AND UNDERSTAND BEFORE SIGNING.
+        <form action="." method="post" class="generalText">{% csrf_token %}
+			{{ form.as_p }}
+			<input type="submit" value="Submit" />
+		</form>
+    </body>
+</html>

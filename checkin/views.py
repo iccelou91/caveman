@@ -2,7 +2,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from forms import GetClimberForm
+from forms import GetClimberForm, ClimberRegistrationForm
 from django import forms
 from django.contrib.auth.decorators import login_required
 from models import *
@@ -22,15 +22,11 @@ def get_climber(request):
             user = form.cleaned_data['user']
             climber = Climber.objects.get(user=user)
             #TODO this url
-            redirect('/dashboard/'+climber.id_num)
+            return redirect('/dashboard/'+climber.id_num)
     else:
         form = GetClimberForm()
 
     return render(request, 'form.html', {'form': form, })
-    
-def get_climber_dashboard(request, student_id):
-    climber = ClimberProfile.objects.get(id_num=student_id)
-    #TODO render a template with that climber's dashboard
     
 def check_in_climber(request, student_id):
     climber = ClimberProfile.objects.get(id_num=student_id)
@@ -55,7 +51,7 @@ def sign_waiver(request, student_id):
             climber = ClimberProfile.objects.get(user=request.user)
             climber.waiver_last_signed = datetime.now()
             climber.save()
-            redirect('/')
+            return redirect('/')
     else:
         form = WaiverForm()
     return render(request, 'waiver.html', {'form': form, })
@@ -64,7 +60,31 @@ def pay_fee(request, student_id):
     climber = ClimberProfile.objects.get(id_num=student_id)
     request = PaymentApprovalRequest(requester=climber)
     request.save()
+    return redirect('/')
+    
+def get_climber_dashboard(request, student_id):
+    climber = ClimberProfile.objects.get(id_num=student_id)
+    return render(request, 'dashboard.html', {'student_id': student_id, })
     
 def sign_up(request):
-    pass
     #TODO registration via form
+    if request.method == 'POST':
+        form = ClimberRegistrationForm(request.POST)                                                   #make a user form filled with information from request.post
+        if form.is_valid():                                                             #clean the data and store them in a new_user instance if the form is valid
+            new_user = User(is_staff = False, is_superuser = False, is_active = False)
+            new_user.username = form.cleaned_data['username']
+            new_user.first_name = form.cleaned_data['first_name']
+            new_user.last_name = form.cleaned_data['last_name']
+            new_user.email = form.cleaned_data['email']
+            new_user.set_password(form.cleaned_data['student_id'])                                              #set the password for the new_user
+            new_user.save()
+            new_climber = ClimberProfile(user=new_user, id_num=form.cleaned_data['student_id'])
+            new_climber.first_name = form.cleaned_data['first_name']
+            new_climber.last_name = form.cleaned_data['last_name']
+            new_climber.save()
+            return redirect('/dashboard/'+new_climber.id_num)
+    else:
+        form = ClimberRegistrationForm()
+    return render(request, 'temp_form.html',{
+            'form': form
+    })
