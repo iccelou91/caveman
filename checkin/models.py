@@ -36,3 +36,4 @@ class PaymentApprovalRequest(models.Model):
         self.delete()
     def reject(self):
         self.delete()
+        
