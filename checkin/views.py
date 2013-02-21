@@ -34,7 +34,7 @@ def get_climber(request):
     else:
         form = GetClimberForm()
 
-    return render(request, 'temp_form.html', {'form': form, })
+    return render(request, 'homepage_form.html', {'form': form, })
     
 def check_in_climber(request, student_id):
     climber = ClimberProfile.objects.get(id_num=student_id)
@@ -45,9 +45,9 @@ def check_in_climber(request, student_id):
             opening.climbers.add(climber)
             opening.save()
         else:
-            raise ValueError
+            raise ValueError("Climber has not paid fee!")
     else:
-        raise ValueError
+        raise ValueError("Climber has not signed waiver!")
     return redirect('/')
     
 def sign_waiver(request, student_id):
@@ -72,7 +72,12 @@ def pay_fee(request, student_id):
     
 def get_climber_dashboard(request, student_id):
     climber = ClimberProfile.objects.get(id_num=student_id)
-    return render(request, 'dashboard.html', {'student_id': student_id, })
+    is_staff = climber.user.is_staff
+    is_open = False
+    if(is_staff):
+        if len(CaveOpening.objects.filter(close_time__isnull=True)) != 0:
+            is_open = True
+    return render(request, 'dashboard.html', {'student_id': student_id, 'climber':climber, 'is_staff':is_staff, 'is_open':is_open})
     
 def sign_up(request):
     #TODO registration via form
@@ -93,6 +98,6 @@ def sign_up(request):
             return redirect('/dashboard/'+new_climber.id_num)
     else:
         form = ClimberRegistrationForm()
-    return render(request, 'temp_form.html',{
+    return render(request, 'registration_form.html',{
             'form': form
     })

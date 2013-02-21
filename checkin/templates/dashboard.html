@@ -1,10 +1,22 @@
 <html>
     <head>
-        <title>CaveMan Form</title>
+        <title>CaveMan | Climber Dashboard for {{ climber.get_full_name }}</title>
     </head>
     <body>
+        Dashboard for {{ climber.get_full_name }}
+        <br>
         <a href="{% url checkin.views.check_in_climber student_id %}">Check In</a>
         <a href="{% url checkin.views.sign_waiver student_id %}">Sign Waiver</a>
         <a href="{% url checkin.views.pay_fee student_id %}">Pay Fee</a>
+        {% if is_staff %}
+            <br>
+            Officer Dashboard:
+            <br>
+            {% if is_open %}
+                <a href="{% url checkin.views.close_cave %}">Close Cave</a>
+            {% else %}
+                <a href="{% url checkin.views.open_cave %}">Open Cave</a>
+            {% endif %}
+        {% endif %}
     </body>
 </html>

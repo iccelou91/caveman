@@ -51,8 +51,8 @@
             {% endfor %}
             <div class="buttons">
                 <a class="button" id="check-in" href="#">Check In</a>  
-                <a class="button" id="check-out" style="margin-top: 10px;" href="#">Check Out</a>
-                <a class="button" id="register" style="margin-top: 10px;" href="register">Register</a>   
+                <a class="button" id="check-out" style="margin-top: 5px;" href="#">Check Out</a>
+                <a class="button" id="register" style="margin-top: 5px;" href="register">Register</a>   
             </div>
         </form>
         </div>

@@ -15,7 +15,10 @@ class GetClimberForm(forms.Form):
         try:
             user = User.objects.get(username=cleaned_data['username'])
         except ObjectDoesNotExist:
-            raise forms.ValidationError("%s does not exist" % cleaned_data['username'])
+            try:
+                user = ClimberProfile.objects.get(id_num=cleaned_data['username']).user
+            except ObjectDoesNotExist:
+                raise forms.ValidationError("%s does not exist" % cleaned_data['username'])
         cleaned_data["user"] = user
 
         return cleaned_data
