@@ -13,7 +13,9 @@ def open_cave(request):
     for opening in unclosed:
         opening.close()
     new_opening = CaveOpening(opener=request.user)
+    climber = ClimberProfile.objects.get(user=request.user)
     new_opening.save()
+    new_opening.climbers.add(climber)
     return redirect('/')
 
 def close_cave(request):
@@ -40,14 +42,7 @@ def check_in_climber(request, student_id):
     climber = ClimberProfile.objects.get(id_num=student_id)
     opening = CaveOpening.objects.get(close_time__isnull=True)
     #TODO expiration of waivers and fees
-    if(climber.waiver_last_signed):
-        if(climber.fee_last_paid):
-            opening.climbers.add(climber)
-            opening.save()
-        else:
-            raise ValueError("Climber has not paid fee!")
-    else:
-        raise ValueError("Climber has not signed waiver!")
+    opening.check_in_climber(climber)
     return redirect('/')
     
 def sign_waiver(request, student_id):

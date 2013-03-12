@@ -1,0 +1,36 @@
+<html>
+    <head>
+        <title>CaveMan Form</title>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+        <script type="text/javascript">
+        var totalval = "";
+        var isScanning = false;
+        $(document).keypress(function(e){
+            //TODO webkit and IE '% key'
+            var checkWebkitandIE=(e.which==26);
+            var checkMoz=(e.which==37);
+            if (isScanning){
+                if (String.fromCharCode(e.which)=="?"){
+                    isScanning=false;
+                    totalval = totalval.substring(0, totalval.length - 2)
+                    document.login.username.value = totalval;
+                    document.login.submit();
+                    return
+                }
+                totalval = totalval + String.fromCharCode(e.which);
+            }
+            if(checkWebkitandIE || checkMoz){
+                isScanning=true;
+                $("body").append("Card Scanning!...");
+            }
+        });
+        </script>
+    </head>
+    <body>
+        <a href="{% url checkin.views.sign_up %}"> register </a>
+        <form name="login" action="." method="post" class="generalText">{% csrf_token %}
+			{{ form.as_p }}
+			<input type="submit" value="Submit" />
+		</form>
+    </body>
+</html>

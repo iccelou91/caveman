@@ -21,12 +21,37 @@ class CaveOpening(models.Model):
     open_time = models.DateTimeField(auto_now_add=True)
     close_time = models.DateTimeField(blank=True, null=True)
     climbers = models.ManyToManyField(ClimberProfile)
+    def check_in_climber(self, climber):
+        if(self.validate_waiver(climber)):
+            if(self.validate_fee(climber)):
+                self.climbers.add(climber)
+                self.save()
+            else:
+                raise ValueError("Climber has not paid fee!")
+        else:
+            raise ValueError("Climber has not signed waiver!")
+    def validate_waiver(self, climber):
+        if(climber.waiver_last_signed):
+            return True
+        else:
+            return False
+    def validate_fee(self, climber):
+        if(climber.fee_last_paid):
+            return True
+        else:
+            return False
     def close(self):
         self.close_time = datetime.now()
         self.save()
     def __unicode__(self):
         return '%s to %s(%s)' % (self.open_time, self.close_time, self.opener.username)
 
+class FreeCaveOpening(CaveOpening):
+    def check_in_climber(self, climber):
+        if(self.validate_waiver):
+            opening.climbers.add(climber)
+        else:
+            raise ValueError("Climber has not signed waiver!")
 class PaymentApprovalRequest(models.Model):
     requester = models.ForeignKey(ClimberProfile)
     date = models.DateTimeField(auto_now_add=True)
