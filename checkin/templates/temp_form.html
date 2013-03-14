@@ -21,12 +21,14 @@
             }
             if(checkWebkitandIE || checkMoz){
                 isScanning=true;
-                $("body").append("Card Scanning!...");
+                $("body").append("Card Scanned!");
             }
         });
         </script>
     </head>
     <body>
+	<h1>Welcome to CaveMan, the WPI CAVE's automated management system.</h1>
+	<p>Enter your username or scan your card to continue</p>
         <a href="{% url checkin.views.sign_up %}"> register </a>
         <form name="login" action="." method="post" class="generalText">{% csrf_token %}
 			{{ form.as_p }}

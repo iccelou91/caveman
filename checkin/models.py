@@ -33,6 +33,8 @@ class CaveOpening(models.Model):
     def validate_waiver(self, climber):
         if(climber.waiver_last_signed):
             return True
+	elif len(PaymentApprovalRequest.objects.filter(requester=climber))>=1:
+            return True
         else:
             return False
     def validate_fee(self, climber):

@@ -26,10 +26,11 @@
         </script>
     </head>
     <body>
-        <p>You can scan your ID instead of manually entering your ID number</p>
+        <p>You can click here and scan your ID instead of manually entering your ID number</p>
         <form name="register" action="." method="post" class="generalText">{% csrf_token %}
 			{{ form.as_p }}
 			<input type="submit" value="Submit" />
-		</form>
+	</form>
+	<a href="/">cancel</a>
     </body>
 </html>

@@ -21,13 +21,17 @@
             }
             if(checkWebkitandIE || checkMoz){
                 isScanning=true;
-                $("body").append("Card Scanning!...");
+                $("body").append("Card Scanned!");
             }
         });
         </script>
     </head>
     <body>
-        <a href="{% url checkin.views.sign_up %}"> register </a>
+	<h1>Welcome to CaveMan</h1>
+	<h2>the CAVE's automated management system.</h2>
+	<p>Enter your username or click <b>here</b> to scan your card or 
+        <a href="{% url checkin.views.sign_up %}">register</a>
+	 to continue</p>
         <form name="login" action="." method="post" class="generalText">{% csrf_token %}
 			{{ form.as_p }}
 			<input type="submit" value="Submit" />
